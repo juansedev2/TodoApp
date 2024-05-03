@@ -1,0 +1,36 @@
+ Diseño de la base de datos de TODOAPP
+
+1. Análisis de requisitos
+#FFFFFF
+#ECFDFF
+
+Lista de Sustantivos:
+
+° Tarea
+° Usuario
+° Actividades
+° Aplicación
+° Base de datos
+° Sesión
+° Invitado
+° Documento
+
+Lista de Sustantivos depurada: 
+
+° Tarea
+° Usuario
+
+Lista de adjetivos:
+
+Para cada tarea se tiene:
+ ° Título, fecha y hora, descripción
+Para cada Usuario se tiene:
+° Nombres, apellidos, correo, contraseña y fecha de registro
+
+Identificación de relaciones y descripción:
+
+° Un usuario puede tener una o muchas tareas, pero una tarea le puede pertenecer a un solo usuario
+
+Fin del análisis de requisitos
+
+
