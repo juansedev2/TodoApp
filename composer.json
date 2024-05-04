@@ -1,0 +1,19 @@
+{
+    "name": "jdev2/todo-app",
+    "description": "Is a todoapp",
+    "type": "project",
+    "require": {
+        "monolog/monolog": "^3.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jdev2\\TodoApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "juansedev2",
+            "email": "jsab62tol@gmail.com"
+        }
+    ]
+}
