@@ -1,4 +1,8 @@
 <?php
+namespace Jdev2\TodoApp\app\models;
+
+use Exception;
+use Jdev2\TodoApp\app\core\Injector;
 
 // This model is the base of all of the models in the app, this have the common propreties of a model
 
@@ -109,7 +113,9 @@ class Model{
         return $result;
     }
 
-
+    public function sayHi(){
+        echo "Hi from Model\n";
+    }
 
 
 }
