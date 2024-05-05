@@ -3,7 +3,8 @@
     "description": "Is a todoapp",
     "type": "project",
     "require": {
-        "monolog/monolog": "^3.6"
+        "monolog/monolog": "^3.6",
+        "twbs/bootstrap": "5.3.3"
     },
     "autoload": {
         "psr-4": {
