@@ -1,4 +1,7 @@
 <?php
+namespace Jdev2\TodoApp\core\router;
+
+use Exception;
 
 class Router{
 
@@ -11,7 +14,21 @@ class Router{
         
         // First evaluare the string request and comparate it with the existing routes
         if(array_key_exists($route, $this->routes)){
-            return require Injector::get("app-route"). "/app/" . $this->routes[$route];
+            
+            $route = $this->routes[$route];
+            $class = $route[0];
+            $method = $route[1];
+            $class = "Jdev2\\TodoApp\\app\\controllers\\{$class}";
+
+            if(!class_exists($class)){
+                throw new Exception("Error, the controller {$class} doesn't no exist!", 1);
+            }
+
+            if(!method_exists($class, $method)){
+                throw new Exception("Error, the mehtod {$method} of the controller {$class} doesn't no exist!", 1);
+            }
+            
+            return (new $class())->$method();
         }
 
         throw new Exception("Error, that route doesn't no exist!", 1);
