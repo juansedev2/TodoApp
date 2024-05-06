@@ -1,4 +1,8 @@
 <?php
+namespace Jdev2\TodoApp\core\database;
+
+use PDO;
+use PDOException;
 
 // This class is the QueryBuilder of the app that makes the queries with the DB
 class QueryBuilder{

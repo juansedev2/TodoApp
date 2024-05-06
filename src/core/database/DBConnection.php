@@ -1,5 +1,8 @@
 <?php
+namespace Jdev2\TodoApp\core\database;
 
+use PDO;
+use PDOException;
 class DBConnection{
 
     public static function ConnectDB(Array $config) : PDO | null{
