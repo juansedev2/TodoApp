@@ -1,5 +1,5 @@
 <?php
-namespace Jdev2\TodoApp\app\core;
+namespace Jdev2\TodoApp\core;
 // This class is the dependency injector of the APP
 class Injector{
 
