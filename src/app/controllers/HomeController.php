@@ -12,7 +12,7 @@ class HomeController extends BaseController{
         return static::returnView("Landing");
     }
 
-    public function loginUser(){
-        dd(User::getAll());
+    public function showRegister(){
+        return static::returnView("Register");
     }
 }
