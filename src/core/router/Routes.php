@@ -3,5 +3,5 @@
 return [
     "" => ["HomeController", "showLanding"],
     "/" => ["HomeController", "showLanding"],
-    "login" => ["LoginController", "loginUser"]
+    "registro" => ["HomeController", "showRegister"]
 ];
