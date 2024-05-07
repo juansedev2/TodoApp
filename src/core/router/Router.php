@@ -31,7 +31,7 @@ class Router{
             return (new $class())->$method();
         }
 
-        throw new Exception("Error, that route doesn't no exist!", 1);
+        throw new Exception("Error, that route doesn't no exist: {$route}!", 1);
         
     }
 }
