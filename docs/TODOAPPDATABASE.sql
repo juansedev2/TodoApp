@@ -24,4 +24,19 @@ create table tarea(
 
 
 
+-- Actualización de la estructura y ahora pasa a ser en ingles
+create table user(
+	id_user int zerofill primary key auto_increment,
+    name varchar(20) not null,
+    last_name varchar(20) not null,
+    email varchar(100) not null,
+    password varchar(255) not null,
+    register_date timestamp not null DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+
+
+
 
