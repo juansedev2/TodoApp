@@ -12,25 +12,15 @@
         <?php include_once "./public/partials/NavBar.partial.php" ?>
     </header>
     <main>
-        <div class="container-sm mw-300 container-form border border-black border-opacity-25 rounded p-5">
-        <form action="/login/" method="POST">
-            <div class="mb-5">
-                <h2 class="text-center">Iniciar sesión</h2>
+        <div class="container">
+            <div class="text-center">
+                <img src="/public/assets/img/todolist.png" class="img-fluid" alt="todolistimage">        
             </div>
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-              <div id="emailHelp" class="form-text">Recuerda siempre cuidar de tus credenciales</div>
+            <div class="text-center mb-5 mt-5">
+                <h1>TodoApp</h1>
+                <h2>Una aplicación web para hacer tu lista de tareas</h2>
+                <h3>Usa el menú de navegación que está en la parte superior de tu pantalla para comenzar</h3>
             </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" required>
-              <div id="passwordlHelp" class="form-text"></div>
-            </div>
-            <div class="mt-4">
-                <button type="submit" class="btn btn-primary">Enviar</button>
-            </div>
-          </form>
         </div>
     </main>
     <?php include_once "./public/partials/BootstrapJS.partial.php"?>
