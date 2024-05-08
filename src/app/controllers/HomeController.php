@@ -15,4 +15,8 @@ class HomeController extends BaseController{
     public function showRegister(){
         return static::returnView("Register");
     }
+
+    public function showAbout(){
+        return static::returnView("About");
+    }
 }

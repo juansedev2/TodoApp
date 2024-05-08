@@ -3,5 +3,6 @@
 return [
     "" => ["HomeController", "showLanding"],
     "/" => ["HomeController", "showLanding"],
-    "registro" => ["HomeController", "showRegister"]
+    "registro" => ["HomeController", "showRegister"],
+    "acerca" => ["HomeController", "showAbout"],
 ];
