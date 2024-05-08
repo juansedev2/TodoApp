@@ -10,10 +10,13 @@
                     <a class="nav-link active" aria-current="page" href="/">Inicio</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/iniciar-sesion/">Iniciar sesión</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/registro/">Registrarse</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/invitado/">Modo invitado</a>
+                    <a class="nav-link" href="/modo-invitado/">Modo invitado</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/acerca/">Acerca de</a>
