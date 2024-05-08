@@ -12,11 +12,19 @@ class HomeController extends BaseController{
         return static::returnView("Landing");
     }
 
+    public function showLoginForm(){
+        return static::returnView("LoginForm");
+    }
+
     public function showRegister(){
         return static::returnView("Register");
     }
 
     public function showAbout(){
         return static::returnView("About");
+    }
+
+    public function showGuestMode(){
+        return static::returnView("GuestMode");
     }
 }

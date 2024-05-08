@@ -5,4 +5,6 @@ return [
     "/" => ["HomeController", "showLanding"],
     "registro" => ["HomeController", "showRegister"],
     "acerca" => ["HomeController", "showAbout"],
+    "modo-invitado" => ["HomeController", "showGuestMode"],
+    "iniciar-sesion" => ["HomeController", "showLoginForm"],
 ];
