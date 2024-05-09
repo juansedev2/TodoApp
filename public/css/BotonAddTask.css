@@ -1,0 +1,9 @@
+svg.add-icon{
+    color: green;
+    width: 100px; 
+    height: 100px;
+    cursor: pointer;
+}
+div.add-boton-container{
+    text-align: center;
+}
