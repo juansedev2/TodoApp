@@ -2,6 +2,7 @@
 namespace Jdev2\TodoApp\core\database;
 
 use PDO;
+use Exception;
 use PDOException;
 
 // This class is the QueryBuilder of the app that makes the queries with the DB
@@ -91,5 +92,50 @@ class QueryBuilder{
             echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
             return null;
         }
+    }
+
+    /**
+     * 
+     * Each model should can execute his property querys
+    */
+    public function ownQuery(string $query, Array $values): Array | bool{
+
+        if(empty($values)){
+            return throw new Exception("NO SE ACEPTAN ARREGLOS VACIOS COMO VALORES en la función ownQuery de la clase QueryBuilder", 1);
+        }
+        if(empty($query)){
+            return throw new Exception("NO SE ACEPTAN CONSULTAS VACIAS en la función ownQuery de la clase QueryBuilder", 1);
+        }
+        if(!str_contains($query, "?")){
+            return throw new Exception("NO SE ACEPTAN CONSULTAS SIN COMODINES de tipo ? en la función ownQuery de la clase QueryBuilder", 1);
+        }
+
+        $getModels = false;
+
+        if(str_contains($query, "SELECT")){
+            $getModels = true;
+        }
+
+        $result = null;
+
+        try {
+
+            $query = $this->pdo->prepare($query);
+            $query->execute($values);
+            
+            if($getModels){
+                $result = $query->fetchAll(PDO::FETCH_ASSOC); // Return how a associative array   
+            }else{
+                $result = true;
+            }
+
+            $query->closeCursor();
+
+        } catch (PDOException $error) {
+            echo $error;
+            $result = false;
+        }
+        return $result;
+
     }
 }
