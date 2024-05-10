@@ -2,17 +2,20 @@
 "use strict";
 function main(){
     addEventListeners();
-    if(!validateSession()){
+    if(!validateSession() || returnTaskList().length == 0){
         let appContainer = document.getElementById("container-todo");
         appContainer.appendChild(showEmptyView());
-        createTaskList();
     }else{
         addTasksView();
     }
 }
 
 function validateSession(){
-    return sessionStorage.length != 0;
+    if(sessionStorage.length != 0){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 function createTaskList(){
@@ -49,7 +52,8 @@ function assginIdTask(){
 }
 
 function showEmptyView(){
-    let container = document.createElement("div.text-center");
+    let container = document.createElement("div");
+    container.id = "text-message-div";
     container.className = "text-center";
     let title1 = document.createElement("h1");
     title1.className = "mb-5 mt-5";
@@ -79,7 +83,7 @@ function addEventListeners(){
             const modal = bootstrap.Modal.getInstance(modalContainer)
             modal.hide();
 
-            if(!validateSession()){
+            if(!validateSession()){ // For the first time to create the first task
                 createTaskList();
             }
 
@@ -91,6 +95,7 @@ function addEventListeners(){
             addTask(task);
             // Update the view
             addLastTask();
+            reloadEventsDeleteButtons();
 
         }
     });
@@ -98,7 +103,9 @@ function addEventListeners(){
 
 function addLastTask(){
     const div_tasks = document.getElementById("container-todo");
-    let last_div = div_tasks.childNodes[div_tasks.childNodes.length - 1];
+    if(document.getElementById("text-message-div")){
+        document.getElementById("text-message-div").remove();
+    }
     const tasks = returnTaskList();
     const task = tasks[tasks.length -1];
     const content = document.createRange().createContextualFragment(`
@@ -116,6 +123,16 @@ function addLastTask(){
         </div>
     `);
 
+    if(div_tasks.childNodes.length == 0){
+        let row = document.createElement("div");
+        row.className = "row";
+        row.appendChild(content);
+        div_tasks.appendChild(row);
+        return;
+    }
+
+    let last_div = div_tasks.childNodes[div_tasks.childNodes.length - 1];
+
     if(last_div.childNodes.length < 9){
         /** 
          * Why 9? because each of the nodes (html element) of a row, actually add 3 (text, html element, text)
@@ -129,7 +146,6 @@ function addLastTask(){
         row.appendChild(content);
         div_tasks.appendChild(row);
     }
-    reloadEventsDeleteButtons();
 }
 
 function addTasksView(){
@@ -217,7 +233,6 @@ function deleteEspecificTask(id){
     const tasks = returnTaskList();
     for(let i = 0; i < tasks.length; i++){
         if(tasks[i].id == id){
-            console.log("Encontrado...");
             tasks.splice(i, 1);
             break;
         }
