@@ -9,4 +9,8 @@ class BaseController{
         extract($params);
         require Injector::get("app-route") . "/public/views/" . $view . ".view.php";
     }
+
+    public static function redirectTo(string $route){
+        header("Location: /{$route}");
+    }
 }
