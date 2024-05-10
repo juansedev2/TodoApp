@@ -7,4 +7,8 @@ return [
     "acerca" => ["HomeController", "showAbout"],
     "modo-invitado" => ["HomeController", "showGuestMode"],
     "iniciar-sesion" => ["HomeController", "showLoginForm"],
+    "login" => ["LoginController", "tryLogin"],
+    "loginError" => ["LoginController", "showLoginError"],
+    "welcome" => ["LoginController", "showWelcome"],
+    "cerrar-sesion" => ["LoginController", "closeSession"]
 ];
