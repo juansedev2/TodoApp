@@ -14,7 +14,7 @@ if(!Injector::get("config")["production"]){
     ini_set("display_startup_errors", 1);
     error_reporting(E_ALL);
 }
-
+date_default_timezone_set((require __DIR__ ."/config/Config.php")["time-zone"]); // Updathe the timezone to the app of the server
 //$pdo = DBConnection::ConnectDB(Injector::get("config")["database"]);
 Injector::set(new QueryBuilder(DBConnection::ConnectDB(Injector::get("config")["database"])), "querybuilder");
 //return new QueryBuilder($pdo);

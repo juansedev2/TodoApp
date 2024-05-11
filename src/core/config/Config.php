@@ -9,5 +9,6 @@ return [
         "user" => "root",
         "password" => "ubddssa2"
     ],
-    "production" => false
+    "production" => false,
+    "time-zone" => "America/Bogota"
 ];
