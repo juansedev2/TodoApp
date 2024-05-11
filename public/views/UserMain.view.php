@@ -67,7 +67,7 @@
             </div>
         </div>
     </main>
-    <script src="/public/js/GuestMode.js"></script>
+    <script src="/public/js/UserLoginMode.js"></script>
     <?php include_once "./public/partials/BootstrapJS.partial.php"?>
 </body>
 </html>
