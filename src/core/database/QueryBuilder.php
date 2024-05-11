@@ -8,7 +8,11 @@ use PDOException;
 // This class is the QueryBuilder of the app that makes the queries with the DB
 class QueryBuilder{
 
-    public function __construct(private PDO $pdo){}
+    public function __construct(private $pdo){}
+
+    public function __destruct(){
+        $this->pdo = null;
+    }
 
     // CRUD OPERATIONS
     // SELECT
@@ -19,6 +23,7 @@ class QueryBuilder{
             if($result){
                 $result = $query->fetchAll(PDO::FETCH_ASSOC); // Is better get an associative array of each record
             }
+            $query->closeCursor();
             return $result;
         } catch (PDOException $e) {
             echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
@@ -39,7 +44,7 @@ class QueryBuilder{
         try {
             $query = $this->pdo->prepare("insert into {$table_name} ({$fields}) values ($wildcards)");
             $result = $query->execute($values);
-            
+            $query->closeCursor();
             return $result;
         } catch (PDOException $e) {
             echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
@@ -54,6 +59,7 @@ class QueryBuilder{
             $result = $query->execute([$id]);
             if($result){
                 $result = $query->fetchAll(PDO::FETCH_ASSOC);
+                $query->closeCursor();
             }
             return $result[0]; // ! THIS IS VERY IMPORTANT! RETURN THE ARRAY INSIDE THE ARRAY OF RESULTS!
         } catch (PDOException $e) {
@@ -74,6 +80,7 @@ class QueryBuilder{
         try {
             $query = $this->pdo->prepare("update {$table_name} set {$wildcards} where {$id_name} = $id");
             $result = $query->execute($values);
+            $query->closeCursor();
             return $result;
         } catch (PDOException $e) {
             echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
@@ -87,6 +94,7 @@ class QueryBuilder{
         try {
             $query = $this->pdo->prepare("delete from {$table_name} where {$id_name} = ?");
             $result = $query->execute([$id]);
+            $query->closeCursor();
             return $result;
         } catch (PDOException $e) {
             echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
@@ -136,6 +144,6 @@ class QueryBuilder{
             $result = false;
         }
         return $result;
-
     }
+
 }
