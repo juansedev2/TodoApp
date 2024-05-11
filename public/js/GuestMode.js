@@ -6,7 +6,9 @@ function main(){
         let appContainer = document.getElementById("container-todo");
         appContainer.appendChild(showEmptyView());
     }else{
+        console.log("volviendo a cargar contenido...");
         addTasksView();
+        reloadEventsDeleteButtons();
     }
 }
 
@@ -66,6 +68,29 @@ function showEmptyView(){
     return container;
 }
 
+
+function valideInputs(title, description){
+    
+    let help_text = document.getElementById("help-text");
+
+    if(title.length != 0  && description.length != 0){
+        if(title.length > 20){
+            help_text.innerText = "Titulo demasiado largo, debe ser máximo 20 caracteres"
+            return false;
+        }
+        if(description.length > 200){
+            help_text.innerText = "Descripción demasiada larga, debe ser máximo 200 caracteres"
+            return false;
+        }
+        help_text.innerText = ""
+        return true;
+    }
+
+    help_text.innerText = "El título y/o la descripción no pueden estar vacios"
+
+    return false;
+}
+
 function addEventListeners(){
     // Buton of the form
     let create_task_button = document.getElementById("create-task-button");
@@ -95,7 +120,6 @@ function addEventListeners(){
             addTask(task);
             // Update the view
             addLastTask();
-            reloadEventsDeleteButtons();
 
         }
     });
@@ -109,7 +133,7 @@ function addLastTask(){
     const tasks = returnTaskList();
     const task = tasks[tasks.length -1];
     const content = document.createRange().createContextualFragment(`
-        <div class="col-sm mb-3 mt-3">
+        <div class="col-sm mb-3 mt-3" id="task-${task.id}">
             <div class="card">
                 <div class="card-header">
                     Tarea # ${task.id}
@@ -122,12 +146,14 @@ function addLastTask(){
             </div>
         </div>
     `);
-
+    
     if(div_tasks.childNodes.length == 0){
         let row = document.createElement("div");
         row.className = "row";
         row.appendChild(content);
         div_tasks.appendChild(row);
+        updateLastTaskEvent(`${task.id}`);
+        reloadEventsDeleteButtons();
         return;
     }
 
@@ -146,6 +172,19 @@ function addLastTask(){
         row.appendChild(content);
         div_tasks.appendChild(row);
     }
+
+    updateLastTaskEvent(`${task.id}`);
+
+}
+
+function updateLastTaskEvent(task_id){
+    const button = document.getElementById(task_id);
+    button.addEventListener("click", (event) => {
+        let confirm_delete_button = document.getElementById("confirm-delete-button"); // GET THE REFERENCE, NOT ONLY DOCUMENT
+        confirm_delete_button.value = event.target.id;
+        document.getElementById("modal-alert-delete-task").innerHTML = "¿Deseas eliminar la tarea: " + event.target.id + "?";    
+    });
+    
 }
 
 function addTasksView(){
@@ -160,7 +199,7 @@ function addTasksView(){
 
         tasks.forEach(task => {
             let content = document.createRange().createContextualFragment(`
-            <div class="col-sm mb-3 mt-3">
+            <div class="col-sm mb-3 mt-3" id="task-${task.id}">
                 <div class="card">
                     <div class="card-header">
                         Tarea # ${task.id}
@@ -172,7 +211,8 @@ function addTasksView(){
                     </div>
                 </div>
             </div>
-            `); 
+            `);
+            
             row.appendChild(content);
             counter_task_on_row++;
 
@@ -183,54 +223,39 @@ function addTasksView(){
                 counter_task_on_row = 0;
             }
         });
-
         div_tasks.appendChild(row);
-        reloadEventsDeleteButtons();
-        return;
+    }else{
+        console.log("ya hay contenido");
     }
-
 }
 
-function valideInputs(title, description){
-    
-    let help_text = document.getElementById("help-text");
+function deleteTask(id){
+    console.log("Eliminando task: " + id);
+};
 
-    if(title.length != 0  && description.length != 0){
-        if(title.length > 20){
-            help_text.innerText = "Titulo demasiado largo, debe ser máximo 20 caracteres"
-            return false;
-        }
-        if(description.length > 200){
-            help_text.innerText = "Descripción demasiada larga, debe ser máximo 200 caracteres"
-            return false;
-        }
-        help_text.innerText = ""
-        return true;
-    }
-
-    help_text.innerText = "El título y/o la descripción no pueden estar vacios"
-
-    return false;
-}
 
 function reloadEventsDeleteButtons(){
     // It's necessary reload the event click to delete buttons
+    console.log("volviendo a cargar los eventos...");
     const delete_task_buttons = document.querySelectorAll("button.delete-task-button");
-    delete_task_buttons.forEach(button => {
-        button.addEventListener("click", (event) => {
-            document.getElementById("modal-alert-delete-task").innerHTML = "¿Deseas eliminar la tarea: " + button.id + "?";
-            document.getElementById("confirm-delete-button").addEventListener("click", () => {
+    let confirm_delete_button = document.getElementById("confirm-delete-button"); // GET THE REFERENCE, NOT ONLY DOCUMENT
+            confirm_delete_button.addEventListener("click", () => {
+                deleteEspecificTask(confirm_delete_button.value);
                 const modalContainer = document.getElementById("staticBackdrop");
                 const modal = bootstrap.Modal.getInstance(modalContainer)
                 modal.hide();
-                deleteEspecificTask(button.id);
-            });
+        });
+    delete_task_buttons.forEach(button => {
+        button.addEventListener("click", (event) => {
+            confirm_delete_button.value = event.target.id;
+            document.getElementById("modal-alert-delete-task").innerHTML = "¿Deseas eliminar la tarea: " + event.target.id + "?";
         });
     });
 }
 
 function deleteEspecificTask(id){
     const tasks = returnTaskList();
+    console.log("Se me pidió borrar la tarea: " + id);
     for(let i = 0; i < tasks.length; i++){
         if(tasks[i].id == id){
             tasks.splice(i, 1);
@@ -238,7 +263,10 @@ function deleteEspecificTask(id){
         }
     }
     updateTasks(tasks);
-    resetDivTaskContent();
+    // ONLY DELETE THE TASK CONTAINER referenced
+    if(document.getElementById(`task-${id}`)){
+        document.getElementById(`task-${id}`).remove();
+    }
 }
 
 function updateTasks(tasks){
@@ -246,12 +274,10 @@ function updateTasks(tasks){
     sessionStorage.setItem("task-list", JSON.stringify(tasks));
 }
 
-
-function resetDivTaskContent(){
-    let div_tasks = document.getElementById("container-todo");
-    div_tasks.innerHTML = "";
-    addTasksView();
+function addEventDeleteButtonConfirm(){
+    
 }
 
-// Init the script of the app
+
+
 main();
