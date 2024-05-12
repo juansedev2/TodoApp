@@ -18,9 +18,10 @@ class SessionValidator{
     /**
      * @param string $identificator_name is the name of the main indentificator of the user (name, email) and that can be showed in public
     */
-    public static function createSession(string $identificator_name){
+    public static function createSession(string $identificator_name, string | int $id_user){
         self::startSession();
         $_SESSION["name_user"] = $identificator_name;
+        $_SESSION["id_user"] = $id_user;
         $_SESSION["logguedin"] = true;
     }
     
@@ -37,6 +38,7 @@ class SessionValidator{
     public static function destroySession(){
         self::startSession();
         unset($_SESSION["name_user"]);
+        unset($_SESSION["id_user"]);
         unset($_SESSION["logguedin"]);
         session_unset();
         session_destroy();
@@ -48,14 +50,25 @@ class SessionValidator{
         );
     }
     /***
-     * This function return the value of the identificator of the user
+     * This function return the value of the identificator of the user (name)
      */
     public static function returnIdentificatorName(){
         static::startSession();
         if(!static::validateSesstionIsActive()){
-            
+            return false;
         }
         return $_SESSION["name_user"];
+    }
+
+    /***
+     * This function return the value of the identificator of the user (id)
+     */
+    public static function returnIdentificator(){
+        static::startSession();
+        if(!static::validateSesstionIsActive()){
+            return false;
+        }
+        return $_SESSION["id_user"];
     }
 
 }
