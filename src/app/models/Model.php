@@ -40,6 +40,23 @@ class Model{
             $this->properties[$property] = $value;
         }
     }
+    
+    /***
+     * This function update the properties of the instancie, if the property for example is compound how an array, then
+     * that value should not be added how others keys in the array properties, instead is better create a new key to save that value, so 
+     * it's necessary to give a new key name, but if is not necessary to update the properties to a new property compund, then the function/method
+     * updated the properties with an inside array_merge, in that case just send the array of properties to be updated.
+     * 
+     * @param array $value it's the array of the propertis to will be updated in the instancie
+     * @param string $newKey it's the name of the new key to add a compound property
+    */
+    public function updateProperties(array $value, string $newKey = ""){
+        if(empty($newKey)){
+            $this->properties = array_merge($this->properties, $value);
+        }else{
+            $this->properties[$newKey] = $value;
+        }
+    }
 
     /**
      * Each model should have return an instance to can continue the model for other actions
@@ -112,10 +129,5 @@ class Model{
         $result = Injector::get("querybuilder")->delete(static::$table_name, $id, static::$pk_name);
         return $result;
     }
-
-    public function sayHi(){
-        echo "Hi from Model\n";
-    }
-
 
 }
