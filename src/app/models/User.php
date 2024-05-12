@@ -51,6 +51,25 @@ class User extends Model{
     }
 
     /**
+     * This function get the tasks associtated of an specifi user by the id of him, this function calls
+     * an store procedure that contains the query and returns the registers of each tasks that the user have
+     * @param string|int $id_user is the id of the user to makes the query
+     * @return array|bool return an array of the registers if existis, if not, then return false
+     * 
+    */
+    public function getTasksForUser(string | int $id_user) : array | bool{
+        $query = "CALL tasksForUser(?)";
+        $id_user = (int)$id_user;
+        $result = Injector::get("querybuilder")->ownQuery($query, [$id_user], true);
+        if(empty($result)){
+            return false;
+        }else{
+            $this->updateProperties($result, "tasks");
+            return $result;
+        }
+    }
+
+    /**
      * This function validates the password hashed to know if is really the password's user
     */
     private function validatePassword(string $literal_password, string $encrypted_password){
