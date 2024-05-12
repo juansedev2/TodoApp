@@ -106,7 +106,7 @@ class QueryBuilder{
      * 
      * Each model should can execute his property querys
     */
-    public function ownQuery(string $query, Array $values): Array | bool{
+    public function ownQuery(string $query, Array $values, bool $wait_models = false): Array | bool{
 
         if(empty($values)){
             return throw new Exception("NO SE ACEPTAN ARREGLOS VACIOS COMO VALORES en la función ownQuery de la clase QueryBuilder", 1);
@@ -124,6 +124,10 @@ class QueryBuilder{
             $getModels = true;
         }
 
+        if($wait_models){
+            $getModels = true;
+        }
+
         $result = null;
 
         try {
@@ -133,8 +137,6 @@ class QueryBuilder{
             
             if($getModels){
                 $result = $query->fetchAll(PDO::FETCH_ASSOC); // Return how a associative array   
-            }else{
-                $result = true;
             }
 
             $query->closeCursor();
