@@ -5,6 +5,7 @@ use Jdev2\TodoApp\app\controllers\BaseController;
 use Jdev2\TodoApp\app\models\User;
 use Jdev2\TodoApp\core\helpers\SessionValidator;
 use Jdev2\TodoApp\core\helpers\InputValidator;
+use Jdev2\TodoApp\app\controllers\UserController;
 
 class LoginController extends BaseController{
 
@@ -26,8 +27,9 @@ class LoginController extends BaseController{
         $result = $user->queryUserByEmailAndPassword($email, $password);
 
         if($result){
-            SessionValidator::createSession($user->name . " " .$user->last_name);
-            $this->showWelcome();
+            SessionValidator::createSession($user->name . " " .$user->last_name, $user->id_user);
+            $user_controller = new UserController();
+            $user_controller->returnWelcomeView($user);
         }else{
             $this->showLoginError("Error, usuario y/o contraseña incorrecto/s");
         }
@@ -45,7 +47,8 @@ class LoginController extends BaseController{
         if(!SessionValidator::validateSesstionIsActive()){
             return $this->showLoginError("Error, sesión no iniciada");
         }
-        return static::returnView("UserMain");
+        $user_controller = new UserController();
+        $user_controller->returnWelcomeView(id_user: SessionValidator::returnIdentificator());
     }
 
     private function validateInputs(string $email, string $password){
