@@ -44,7 +44,7 @@ class SessionValidator{
         session_destroy();
         $params = session_get_cookie_params();
         setcookie(
-            session_name(), null, time() - 220000,
+            session_name(), "", time() - 220000,
             $params["path"], $params["domain"],
             $params["secure"], $params["httponly"]
         );
