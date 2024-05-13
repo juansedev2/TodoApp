@@ -42,12 +42,13 @@ class Task extends Model{
     public function updateTask(string | int $id_task, string $title_task, string $task_description): array | bool{
         $query = "CALL updateTask(?, ?, ?)";
         $result = Injector::get("querybuilder")->ownQuery($query, [$id_task, $title_task, $task_description]);
-        if(empty($result)){
-            return false;
-        }else{
-            
-            return true;
-        }
+        return $result;
+    }
+
+    public function insertTask(string | int $id_user, string $title_task, string $task_description): array | bool{
+        $query = "CALL insertTask(?, ?, ?)";
+        $result = Injector::get("querybuilder")->ownQuery($query, [$id_user, $title_task, $task_description]);
+        return $result;
     }
 
 }
