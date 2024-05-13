@@ -51,4 +51,10 @@ class Task extends Model{
         return $result;
     }
 
+    public function deleteTask(string | int $id_task){
+        $query = "CALL deleteTask(?)";
+        $result = Injector::get("querybuilder")->ownQuery($query, [$id_task]);
+        return $result;
+    }
+
 }
