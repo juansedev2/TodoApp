@@ -79,7 +79,8 @@ class Model{
     // Function to the model can create the register
     public function save(){
         static::validateTableName();
-        Injector::get("querybuilder")->create(static::$table_name, $this->properties);
+        $result = Injector::get("querybuilder")->create(static::$table_name, $this->properties);
+        $this->updateProperties(["state_creation_operation" => $result]);
     }
 
     // Function to get all the registers of the table
