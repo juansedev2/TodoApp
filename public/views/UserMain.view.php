@@ -48,21 +48,21 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form action="/create-task/" method="post">
                             <div class="mb-3">
-                                <label for="recipient-name" class="col-form-label">Titulo:</label>
-                                <input type="text" class="form-control" id="title-task" min="1" max="20" required>
+                                <label for="recipient-name" class="col-form-label">Título:</label>
+                                <input type="text" class="form-control" name="title-task" id="title-task" min="1" max="20" required>
                             </div>
                             <div class="mb-3">
-                                <label for="message-text" class="col-form-label">Descripcion:</label>
-                                <textarea class="form-control" id="description-task" min="1" max="200" required></textarea>
+                                <label for="message-text" class="col-form-label">Descripción:</label>
+                                <textarea class="form-control" name="description-task" id="description-task" min="1" max="200" required></textarea>
                             </div>
                             <div class="mb-3 text-danger" id="help-text"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary" id="create-task-button">Crear tarea</button>
+                            </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" id="create-task-button">Crear tarea</button>
                     </div>
                 </div>
             </div>
