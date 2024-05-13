@@ -13,6 +13,17 @@
     </header>
     <main>
         <div class="container mw-200 container-form border border-black border-opacity-25 rounded p-5">
+            <?php
+              if(!empty($alert)):
+            ?>
+              <div class="container">
+                <div class="alert <?=$color_alert?>" role="alert">
+                  <?=$alert?>
+                </div>
+              </div>
+            <?php
+              endif;
+            ?>
             <form method="post" action="/register/">
                 <div class="mb-4 mt-4">
                   <h1 class="text-center">Formulario de registro</h1>
@@ -22,26 +33,26 @@
                 </div>
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">Nombres</label>
-                  <input type="text" class="form-control">
+                  <input type="text" class="form-control" name="name">
                 </div>
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">Apellidos</label>
-                  <input type="text" class="form-control">
+                  <input type="text" class="form-control" name="last-name">
                 </div>
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
-                  <input type="email" class="form-control">
+                  <input type="email" class="form-control" name="email">
                 </div>
                 <div class="mb-3">
                   <label for="inputPassword5" class="form-label">Contraseña</label>
-                  <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+                  <input type="password" name="password" id="inputPassword" class="form-control" aria-describedby="passwordHelpBlock">
                   <div id="passwordHelpBlock" class="form-text">
                     Su contraseña debe tener entre 8 y 20 caracteres, contener letras y números, y no debe contener espacios, caracteres especiales ni emoji.
                   </div>
                 </div>
                 <div class="mb-3">
                   <label for="inputPassword5" class="form-label">Confirmar contraseña</label>
-                  <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+                  <input type="password" name="password2" id="inputPassword2" class="form-control" aria-describedby="passwordHelpBlock">
                 </div>
                 <div class="mt-4">
                   <button type="submit" class="btn btn-primary">Enviar</button>
