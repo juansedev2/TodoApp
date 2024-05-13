@@ -10,5 +10,6 @@ return [
     "login" => ["LoginController", "tryLogin"],
     "loginError" => ["LoginController", "showLoginError"],
     "welcome" => ["LoginController", "showWelcome"],
-    "cerrar-sesion" => ["LoginController", "closeSession"]
+    "cerrar-sesion" => ["LoginController", "closeSession"],
+    "actualizar-tarea" => ["TaskController", "showUpdateTaskView"]
 ];
