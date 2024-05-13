@@ -32,10 +32,15 @@
                             <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirmar la eliminación</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                    <div class="modal-body" id="modal-alert-delete-task"></div>
+                    <div class="modal-body" id="modal-alert-delete-task">
+                        <h5>¿Deseas eliminar la tarea?</h5>
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger" id="confirm-delete-button">Si, eliminar</button>
+                        <form action="/eliminar-tarea/" method="post">
+                            <input type="text" value="" id="id_task_input_button" name="id_task_input_button"  hidden>
+                            <button type="submit" class="btn btn-danger" id="confirm-delete-button">Si, eliminar</button>
+                        </form>
                     </div>
                 </div>
             </div>
