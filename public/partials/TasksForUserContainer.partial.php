@@ -19,7 +19,7 @@
                                     <input type="text" name="id_task" hidden value="<?=$task["id_task"]?>">
                                     <button type="submit" id="update-button-task" class="btn btn-info">Actualizar</button>
                                 </form>
-                                <form action="/eliminar-tarea-form/"method="post" class="forms-section">
+                                <form action="/eliminar-tarea-form/" method="post" class="forms-section" id="delete-task-form">
                                     <input type="text" name="id_task" hidden value="<?=$task["id_task"]?>">
                                     <button type="button" id="delete-button-modal" class="btn btn-danger delete-task-button" value="<?=$task["id_task"]?>" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Eliminar</button>
                             </form>
