@@ -74,6 +74,27 @@ class TaskController extends BaseController{
         }
     }
 
+    public function deleteTask(){
+
+        if(static::validateSession()){
+            
+            $id_task_input_button = $_POST["id_task_input_button"] ?? "";
+            
+            if(empty($id_task_input_button)){
+                return throw new Exception("DATOS INCOMPLETOS MOSTRAR ERROR", 1);
+            }else{
+                $result = (new Task)->deleteTask($id_task_input_button);
+                if($result){
+                    return static::redirectTo("welcome");
+                }else{
+                    return throw new Exception("500, no se pudo eliminar la tarea, error de servidor", 1);
+                }
+            }
+        }else{
+            return (new LoginController)->showLoginError("Error, sesión no iniciada");
+        }
+    }
+
 
 
 }
