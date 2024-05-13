@@ -50,7 +50,28 @@ class TaskController extends BaseController{
         }else{
             return (new LoginController)->showLoginError("Error, sesión no iniciada");
         }
+    }
 
+    public function createTask(){
+        if(static::validateSession()){
+            
+            $id_user = SessionValidator::returnIdentificator();
+            $title_task = $_POST["title-task"] ?? "";
+            $task_description = $_POST["description-task"] ?? "";
+            
+            if(empty($id_user) || empty($title_task) || empty($task_description)){
+                return throw new Exception("DATOS INCOMPLETOS MOSTRAR ERROR", 1);
+            }else{
+                $result = (new Task)->insertTask($id_user, $title_task, $task_description);
+                if($result){
+                    return static::redirectTo("welcome");
+                }else{
+                    return throw new Exception("500, no se pudo crear la tarea, error de servidor", 1);
+                }
+            }
+        }else{
+            return (new LoginController)->showLoginError("Error, sesión no iniciada");
+        }
     }
 
 
