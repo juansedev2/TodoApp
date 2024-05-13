@@ -4,6 +4,7 @@ return [
     "" => ["HomeController", "showLanding"],
     "/" => ["HomeController", "showLanding"],
     "registro" => ["HomeController", "showRegister"],
+    "register" => ["UserController", "createUser"],
     "acerca" => ["HomeController", "showAbout"],
     "modo-invitado" => ["HomeController", "showGuestMode"],
     "iniciar-sesion" => ["HomeController", "showLoginForm"],
