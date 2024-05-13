@@ -2,6 +2,7 @@
 namespace Jdev2\TodoApp\app\controllers;
 
 use Jdev2\TodoApp\core\Injector;
+use Jdev2\TodoApp\core\helpers\SessionValidator;
 
 class BaseController{
 
@@ -12,5 +13,12 @@ class BaseController{
 
     public static function redirectTo(string $route){
         header("Location: /{$route}");
+    }
+
+    /**
+     * Some of the controllers must need validate implement the sessionValidator
+    */
+    public static function validateSession(){
+        return SessionValidator::validateSesstionIsActive();
     }
 }
