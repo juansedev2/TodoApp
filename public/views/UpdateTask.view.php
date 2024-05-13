@@ -45,6 +45,7 @@
             </div>
         </form>
     </div>
+    <script src="/public/js/ReturnScript.js"></script>
     <?php include_once "./public/partials/BootstrapJS.partial.php"?>
 </body>
 </html>
