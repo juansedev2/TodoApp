@@ -12,5 +12,6 @@ return [
     "welcome" => ["LoginController", "showWelcome"],
     "cerrar-sesion" => ["LoginController", "closeSession"],
     "actualizar-tarea-form" => ["TaskController", "showUpdateTaskView"],
-    "update-task" => ["TaskController", "updateTask"]
+    "update-task" => ["TaskController", "updateTask"],
+    "create-task" => ["TaskController", "createTask"]
 ];
