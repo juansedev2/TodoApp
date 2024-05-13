@@ -133,12 +133,12 @@ class QueryBuilder{
         try {
 
             $query = $this->pdo->prepare($query);
-            $query->execute($values);
+            $result = $query->execute($values);
             
             if($getModels){
                 $result = $query->fetchAll(PDO::FETCH_ASSOC); // Return how a associative array   
             }
-
+            
             $query->closeCursor();
 
         } catch (PDOException $error) {
