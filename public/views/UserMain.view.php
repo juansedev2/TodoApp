@@ -6,6 +6,7 @@
     <title>TodoApp - Binvendo</title>
     <?php include_once "./public/partials/GeneralHead.partial.php"?>
     <link rel="stylesheet" href="/public/css/BotonAddTask.css">
+    <link rel="stylesheet" href="/public/css/UserContainer.css">
 </head>
 <body>
     <header>
@@ -15,7 +16,7 @@
         <div class="container">
             <?php include_once "./public/partials/GreetUser.partial.php" ?>
         </div>
-        <div class="container" id="container-todo"></div>
+        <?php include_once "./public/partials/TasksForUserContainer.partial.php" ?> 
         <div class="container add-boton-container mt-5 mb-5">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill add-icon" id="add-icon-button" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
