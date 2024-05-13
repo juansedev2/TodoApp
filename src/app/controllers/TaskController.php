@@ -30,6 +30,29 @@ class TaskController extends BaseController{
 
     }
 
+    public function updateTask(){
+        if(static::validateSession()){
+            
+            $id_task = $_POST["task-id"] ?? "";
+            $title_task = $_POST["task-title"] ?? "";
+            $task_description = $_POST["task-description"] ?? "";
+            
+            if(empty($id_task) || empty($title_task) || empty($task_description)){
+                return throw new Exception("DATOS INCOMPLETOS MOSTRAR ERROR", 1);
+            }else{
+                $result = (new Task)->updateTask($id_task, $title_task, $task_description);
+                if($result){
+                    return static::redirectTo("welcome");
+                }else{
+                    return throw new Exception("500, no se pudo actualizar la tarea, error de servidor", 1);
+                }
+            }
+        }else{
+            return (new LoginController)->showLoginError("Error, sesión no iniciada");
+        }
+
+    }
+
 
 
 }
