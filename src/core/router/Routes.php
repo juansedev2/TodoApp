@@ -13,5 +13,6 @@ return [
     "cerrar-sesion" => ["LoginController", "closeSession"],
     "actualizar-tarea-form" => ["TaskController", "showUpdateTaskView"],
     "update-task" => ["TaskController", "updateTask"],
-    "create-task" => ["TaskController", "createTask"]
+    "create-task" => ["TaskController", "createTask"],
+    "eliminar-tarea" => ["TaskController", "deleteTask"]
 ];
