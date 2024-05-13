@@ -15,11 +15,11 @@
                             <h3 class="card-title"><?=$task["title"]?></h3>
                             <p class="card-text"><?=$task["description"]?></p>
                             <div class="d-flex width">
-                                <form action="/actualizar-tarea/" method="post" class="forms-section">
+                                <form action="/actualizar-tarea-form/" method="post" class="forms-section">
                                     <input type="text" name="id_task" hidden value="<?=$task["id_task"]?>">
                                     <button type="submit" id="update-button-task" class="btn btn-info">Actualizar</button>
                                 </form>
-                                <form action="/eliminar-tarea/"method="post" class="forms-section">
+                                <form action="/eliminar-tarea-form/"method="post" class="forms-section">
                                     <input type="text" name="id_task" hidden value="<?=$task["id_task"]?>">
                                     <button type="button" id="delete-button-modal" class="btn btn-danger delete-task-button" value="<?=$task["id_task"]?>" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Eliminar</button>
                             </form>
