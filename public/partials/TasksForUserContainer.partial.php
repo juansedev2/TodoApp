@@ -1,6 +1,6 @@
 <div class="container" id="container-todo">
-    <?php if($user->taks): ?>
-        <h1 class="text center">No hay tareas registradas para este usuario</h1>
+    <?php if(!$user->tasks): ?>
+        <h1 class="text-center">No hay tareas registradas de este usuario</h1>
     <?php else:?>
             <div class="row">
             <?php $contador = 1;?>
