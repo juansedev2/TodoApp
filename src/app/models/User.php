@@ -13,7 +13,7 @@ class User extends Model{
      * @property string $table_name
      * The name of the model equivalent to the name of the table
     */
-    protected static string $table_name = "user";
+    protected static string $table_name = "users";
     /**
      * @property string $pk_name
      * The name of the primary key of the model
