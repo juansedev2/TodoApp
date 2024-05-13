@@ -10,6 +10,9 @@
                     <a class="nav-link" aria-current="page" href="/">Inicio</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/welcome/">Menú principal</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/acerca/">Acerca de</a>
                 </li>
                 <li class="nav-item">
