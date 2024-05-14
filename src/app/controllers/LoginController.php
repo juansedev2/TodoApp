@@ -23,6 +23,19 @@ class LoginController extends BaseController{
             return $this->showLoginError("Error, sesión no iniciada");
         }
 
+        $email = InputValidator::cleanWhiteSpaces($email);
+        $password = InputValidator::cleanWhiteSpaces($password);
+        $email = InputValidator::escapeCharacters($email);
+        $password = InputValidator::escapeCharacters($password);
+
+        if(!InputValidator::validateIfIsEmail($email)){
+            return $this->showLoginError("Error formato de correo electrónico inválido");
+        }
+
+        if(!InputValidator::validateMaxLenght($password, 255)){
+            return $this->showLoginError("Error, ¿Contraseña de más de 255 caracteres?");
+        }
+
         $user = new User();
         $result = $user->queryUserByEmailAndPassword($email, $password);
 
@@ -43,12 +56,12 @@ class LoginController extends BaseController{
         return static::returnView("LoginMode", ["user_name" => $user_name]);
     }
 
-    public function showWelcome(){
+    public function showWelcome(array $alert_message = []){
         if(!SessionValidator::validateSesstionIsActive()){
             return $this->showLoginError("Error, sesión no iniciada");
         }
         $user_controller = new UserController();
-        $user_controller->returnWelcomeView(id_user: SessionValidator::returnIdentificator());
+        $user_controller->returnWelcomeView(id_user: SessionValidator::returnIdentificator(), alert_message: $alert_message);
     }
 
     private function validateInputs(string $email, string $password){
