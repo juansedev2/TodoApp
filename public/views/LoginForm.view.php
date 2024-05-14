@@ -13,7 +13,7 @@
     </header>
     <main>
         <div class="container-sm mw-300 container-form border border-black border-opacity-25 rounded p-5">
-        <form action="/login/" method="POST">
+        <form action="/login/" method="POST" id="login-form">
             <div class="mb-5">
                 <h2 class="text-center">Iniciar sesión</h2>
             </div>
@@ -33,6 +33,7 @@
           </form>
         </div>
     </main>
+    <script src="/public/js/LoginScript.js"></script>
     <?php include_once "./public/partials/BootstrapJS.partial.php"?>
 </body>
 </html>
