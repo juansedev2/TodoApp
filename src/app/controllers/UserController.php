@@ -54,6 +54,13 @@ class UserController extends BaseController{
                 return static::returnView("Register", ["alert" => "Formato de correo no válido", "color_alert" => "alert-warning"]);
             }
 
+            // Validate if the email exists!
+            $result = (new User)->queryUserByEmail($email);
+
+            if((new User)->queryUserByEmail($email)){
+                return static::returnView("Register", ["alert" => "¡Error, ese usuario ya existe!", "color_alert" => "alert-danger"]);
+            }
+
             if(!InputValidator::validateIfPasswordIsSecure($password)){
                 return static::returnView("Register", ["alert" => "La contraseña debe ser de mínimo 8 caracteres, al menos una letra en maýuscula, al menos un número y un caracter especial, al menos", "color_alert" => "alert-warning"]);
             }

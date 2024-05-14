@@ -51,6 +51,16 @@ class User extends Model{
     }
 
     /**
+     * @param string $email_user is the email of the user to query in the db
+     * @return bool | array false if the query doesn't find any user to the email, array with it's data in otherwise
+    */
+    public function queryUserByEmail(string $email_user) : bool | Array{
+        $query = "SELECT * FROM users WHERE email = ? LIMIT 1";
+        $result = Injector::get("querybuilder")->ownQuery($query, [$email_user]);
+        return $result;
+    }
+
+    /**
      * This function get the tasks associtated of an specifi user by the id of him, this function calls
      * an store procedure that contains the query and returns the registers of each tasks that the user have
      * @param string|int $id_user is the id of the user to makes the query
