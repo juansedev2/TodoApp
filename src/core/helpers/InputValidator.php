@@ -24,7 +24,7 @@ class InputValidator{
      * @return string: return the escaped $string
     */
     public static function escapeCharacters(string $string): string{
-        return htmlspecialchars($string, ENT_QUOTES);
+        return htmlspecialchars(strip_tags(trim($string)), ENT_QUOTES, 'UTF-8');
     }
 
     /**
@@ -40,9 +40,8 @@ class InputValidator{
      * @param string $input is the input to valite it the email format
      * @return bool | int: true or 1 if the $input have the validate email format, else, return false or 0
     */
-    function validateIfIsEmail(string $input): bool | int{
-        $regex = "/[-A-Za-z0-9!#$%&\'*+/=?^_`{|}~]+(?:\\.[-A-Za-z0-9!#$%&\'*+/=?^_`{|}~]+)*@(?:[A-Za-z0-9](?:[-A-Za-z0-9]*[A-Za-z0-9])?\\.)+[A-Za-z0-9](?:[-A-Za-z0-9]*[A-Za-z0-9])?/i";
-        return preg_match($regex, $input);
+    public static function validateIfIsEmail(string $input): bool | int{
+        return filter_var($input, FILTER_VALIDATE_EMAIL);
     }
 
     /**
@@ -57,7 +56,7 @@ class InputValidator{
      * @return bool | int: true or 1 if the $input have the validate password format, else, return false or 0
     */
     public static function validateIfPasswordIsSecure(string $input): bool | int{
-        $regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/";
+        $regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,64}$/";
         return preg_match($regex, $input);
     }
 
@@ -66,7 +65,7 @@ class InputValidator{
      * (WARNING: EMPTY inputs also are considered false)
      * @param string $input is the input to valite it the $input is within of the $max_lenght permitted
      * @param string $max_lenght is the MAX number that the $input can have
-     * @return bool | int: true if the $input have the max or less chacteres, else, return false
+     * @return bool | int: true if the $input have the max length or less characteres, else, return false
     */
     public static function validateMaxLenght(string $input, int $max_length): bool{
         if(empty($input)){
