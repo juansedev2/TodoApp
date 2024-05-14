@@ -2,6 +2,7 @@
 namespace Jdev2\TodoApp\core\router;
 
 use Exception;
+use Jdev2\TodoApp\app\controllers\ExceptionController;
 
 class Router{
 
@@ -31,6 +32,8 @@ class Router{
             return (new $class())->$method();
         }
 
+        //return ExceptionController::returnNotFoundView();
+        
         throw new Exception("Error, that route doesn't no exist: {$route}!", 1);
         
     }
