@@ -16,6 +16,7 @@
         <div class="container">
             <?php include_once "./public/partials/GreetUser.partial.php" ?>
         </div>
+        <?php include_once "./public/partials/AlertTaskStatus.partial.php" ?>
         <?php include_once "./public/partials/TasksForUserContainer.partial.php" ?> 
         <div class="container add-boton-container mt-5 mb-5">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill add-icon" id="add-icon-button" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#exampleModal">
