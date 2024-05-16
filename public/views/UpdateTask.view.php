@@ -35,6 +35,9 @@
                             <div class="mt-3">
                                 <h6>Última actualización: <?=$task->updated_at?></h6>
                             </div>
+                            <div>
+                                <?php require "./public/partials/TokenCSRF.partial.php" ?>
+                            </div>
                             <div class="text-center">
                                 <button type="button" class="btn btn-secondary" id="cancel-button">Cancelar</button>
                                 <button type="submit" class="btn btn-info text-center">Actualizar</button>
