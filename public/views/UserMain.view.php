@@ -39,6 +39,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <form action="/eliminar-tarea/" method="post">
+                            <?php require "./public/partials/TokenCSRF.partial.php" ?>
                             <input type="text" value="" id="id_task_input_button" name="id_task_input_button"  hidden>
                             <button type="submit" class="btn btn-danger" id="confirm-delete-button">Si, eliminar</button>
                         </form>
@@ -55,6 +56,7 @@
                     </div>
                     <div class="modal-body">
                         <form action="/create-task/" method="post">
+                            <?php require "./public/partials/TokenCSRF.partial.php" ?>
                             <div class="mb-3">
                                 <label for="recipient-name" class="col-form-label">Título:</label>
                                 <input type="text" class="form-control" name="title-task" id="title-task" min="1" max="20" required>
