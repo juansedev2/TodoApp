@@ -1,7 +1,10 @@
 <?php
 namespace Jdev2\TodoApp\core\helpers;
 
+use Exception;
+use Jdev2\TodoApp\core\security\TokenGenerator;
 use Jdev2\TodoApp\app\controllers\LoginController;
+
 class SessionValidator{
 
     public static function startSession(){ // to create or reactivate a session, always is necessary start it
@@ -69,6 +72,42 @@ class SessionValidator{
             return false;
         }
         return $_SESSION["id_user"];
+    }
+
+    /**
+     * This function get an csrf token to save it in the session, is just to use in forms events
+    */
+    public static function assignCSRFToken() : string{
+        static::startSession();
+        $_SESSION["csrf_token"] = TokenGenerator::generateCSRFToken();
+        return $_SESSION["csrf_token"];
+    }
+
+    /**
+     * This function DESTROY THE csrf token, must be used when other token has been used
+    */
+    public static function destroyCSRFToken(){
+        static::startSession();
+        if(!empty($_SESSION["csrf_token"])){
+            unset($_SESSION["csrf_token"]);
+        }else{
+            throw new Exception("error en destrucción de token", 1);
+        }
+    }
+
+    /**
+     * This function comparate the CSRF Token sended from the client
+     * @param string $csrf_token_obtained is the token of the client
+     * @return bool: true if the token is validated (form the client and the session is equal), false if not
+    */
+    public static function comparateCSRFToken(string $csrf_token_obtained){
+        static::startSession();
+        //dd("Obtenido: {$csrf_token_obtained} y el que tiene en la sesión es: {$_SESSION["csrf_token"]}");
+        if(empty($_SESSION["csrf_token"])){
+            return false;
+        }else{
+            return $_SESSION["csrf_token"] === $csrf_token_obtained;
+        }
     }
 
 }
