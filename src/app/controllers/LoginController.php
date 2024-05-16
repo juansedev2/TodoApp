@@ -13,6 +13,7 @@ class LoginController extends BaseController{
 
         // First, validate if the user already logged before to skip the query
         if(SessionValidator::validateSesstionIsActive()){
+            $csrf_token = SessionValidator::assignCSRFToken();
             return static::redirectTo("welcome");
         }
         
