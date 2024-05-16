@@ -13,7 +13,12 @@ use Jdev2\TodoApp\app\controllers\ExceptionController;
 class TaskController extends BaseController{
 
     public function showUpdateTaskView(){
+
         if(static::validateSession()){
+
+            // Always first validate Token
+            static::validateCSRFToken();
+
             $id_task = $_POST["id_task"] ?? "";
             $id_task = InputValidator::escapeCharacters(InputValidator::cleanWhiteSpaces($id_task));
 
@@ -24,7 +29,8 @@ class TaskController extends BaseController{
                 $task = new Task;
                 $result = $task->getInfoTaskById($id_task);
                 if($result){
-                    return static::returnView("UpdateTask", ["task" => $task]);
+                    $csrf_token = SessionValidator::assignCSRFToken();
+                    return static::returnView("UpdateTask", ["task" => $task, "csrf_token" => $csrf_token]);
                 }else{
                     //return throw new Exception("404, tarea no encontrada", 1);
                     return ExceptionController::returnNotFoundView();
@@ -38,6 +44,9 @@ class TaskController extends BaseController{
 
     public function updateTask(){
         if(static::validateSession()){
+
+            // Always first validate Token
+            static::validateCSRFToken();
             
             $id_task = $_POST["task-id"] ?? "";
             $title_task = $_POST["task-title"] ?? "";
@@ -72,7 +81,11 @@ class TaskController extends BaseController{
     }
 
     public function createTask(){
+
         if(static::validateSession()){
+
+            // Always first validate Token
+            static::validateCSRFToken();
             
             $id_user = SessionValidator::returnIdentificator();
             $title_task = $_POST["title-task"] ?? "";
@@ -110,6 +123,9 @@ class TaskController extends BaseController{
     public function deleteTask(){
 
         if(static::validateSession()){
+
+            // Always first validate Token
+            static::validateCSRFToken();
             
             $id_task_input_button = $_POST["id_task_input_button"] ?? "";
             $id_task_input_button = InputValidator::escapeCharacters(InputValidator::cleanWhiteSpaces($id_task_input_button));
