@@ -7,6 +7,7 @@ use Jdev2\TodoApp\app\controllers\BaseController;
 use Jdev2\TodoApp\core\helpers\InputValidator;
 use Jdev2\TodoApp\core\security\Encryptor;
 use Jdev2\TodoApp\app\controllers\ExceptionController;
+use Jdev2\TodoApp\core\helpers\SessionValidator;
 
 class UserController extends BaseController{
 
@@ -14,6 +15,10 @@ class UserController extends BaseController{
      * This function gets the welcome view for the user, also show the tasks if the user have
     */
     public function returnWelcomeView(User $user = null, string | int $id_user = null, array $alert_message = []){
+
+        // Create the csrf token
+        $csrf_token = SessionValidator::assignCSRFToken();
+
         if(is_null($user) && is_null($id_user)){
             // return throw new Exception("El parametro user o id_user NO PUEDEN SER NULOS, DEBE ENVIARSE AL MENOS 1", 1);
             return ExceptionController::returnInternalServerErrorView();
@@ -23,7 +28,7 @@ class UserController extends BaseController{
             $user = new User();
             $user->getTasksForUser($id_user);
         }
-        static::returnView("UserMain", array_merge(["user" => $user], $alert_message));
+        static::returnView("UserMain", array_merge(["user" => $user, "csrf_token" => $csrf_token], $alert_message));
     }
 
     public function createUser(){
