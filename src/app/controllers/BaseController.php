@@ -21,4 +21,15 @@ class BaseController{
     public static function validateSession(){
         return SessionValidator::validateSesstionIsActive();
     }
+
+    protected static function validateCSRFToken(){
+        // First get the csrf token
+        $csrf_token_obtained = $_POST["csrf-token"] ?? "";
+        if(!SessionValidator::comparateCSRFToken($csrf_token_obtained)){
+            ExceptionController::returnForbidden();
+        }else{
+            SessionValidator::destroyCSRFToken();
+        }
+    }
+
 }
