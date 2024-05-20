@@ -1,2 +1,5 @@
 /vendor/
 docs/credentialsapp.txt
+/logs/
+# Just and seapare project to test CSRF attacks, it's not necessary to the project
+/attack/ 
