@@ -5,9 +5,9 @@ return [
         "sgbd" => "mysql",
         "host" => "127.0.0.1",
         "port" => "3306",
-        "name" => "todoappdatabase",
+        "name" => "todoappdb",
         "user" => "root",
-        "password" => "ubddssa2"
+        "password" => "ubddS$21"
     ],
     "production" => false,
     "time-zone" => "America/Bogota"
