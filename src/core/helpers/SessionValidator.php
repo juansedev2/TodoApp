@@ -32,7 +32,7 @@ class SessionValidator{
      * This function validate if the session is active o no (validate also)
      * @return bool true if the session is active and validate, false if not
     */
-    public static function validateSesstionIsActive(){
+    public static function validateSessionIsActive(){
         self::startSession();
         // Remember that empty return false if the var exists and is not cero or "": https://www.php.net/manual/es/function.empty.php
         return !empty($_SESSION["logguedin"]);
@@ -57,7 +57,7 @@ class SessionValidator{
      */
     public static function returnIdentificatorName(){
         static::startSession();
-        if(!static::validateSesstionIsActive()){
+        if(!static::validateSessionIsActive()){
             return false;
         }
         return $_SESSION["name_user"];
@@ -68,7 +68,7 @@ class SessionValidator{
      */
     public static function returnIdentificator(){
         static::startSession();
-        if(!static::validateSesstionIsActive()){
+        if(!static::validateSessionIsActive()){
             return false;
         }
         return $_SESSION["id_user"];

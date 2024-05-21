@@ -11,9 +11,14 @@ use Jdev2\TodoApp\app\controllers\BaseController;
 use Jdev2\TodoApp\app\controllers\LoginController;
 use Jdev2\TodoApp\app\controllers\ExceptionController;
 
-
+/**
+ * This class is the controller to the task model and his operations about CRUD example and others
+*/
 class TaskController extends BaseController{
 
+    /**
+     * This function show the update task view, get the data and return the view, if not, then returns the error according if the resource if not exists or if the session is not active
+    */
     public function showUpdateTaskView(){
 
         if(static::validateSession()){
@@ -47,7 +52,9 @@ class TaskController extends BaseController{
         }
 
     }
-
+    /**
+     * This function updates an specific resource sending by the data that the client sending, validates if the resource exists, validations of the data, CSRF, and more
+    */
     public function updateTask(){
 
         AppLogger::addClientConnectionLog();
@@ -91,7 +98,9 @@ class TaskController extends BaseController{
             return (new LoginController)->showLoginError("Error, sesión no iniciada");
         }
     }
-
+    /**
+     * This function create a task resource sending by the data that the client sending, validates if the resource exists, validations of the data, CSRF, and more
+    */
     public function createTask(){
 
         AppLogger::addClientConnectionLog();
@@ -138,6 +147,9 @@ class TaskController extends BaseController{
         }
     }
 
+    /**
+     * This function delete an specific task resource sending by the data that the client sending, validates if the resource exists, validations of the data, CSRF, and more
+    */
     public function deleteTask(){
 
         AppLogger::addClientConnectionLog();

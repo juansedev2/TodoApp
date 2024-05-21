@@ -13,7 +13,10 @@ use Jdev2\TodoApp\app\controllers\ExceptionController;
 class UserController extends BaseController{
 
     /**
-     * This function gets the welcome view for the user, also show the tasks if the user have
+     * This function gets the welcome view for the user, also show the tasks if the user have, but also maks the CSRF and session validation validation
+     * @param User $user is the user model to get the task resources and his data, is optional according if the $id_user is sendend, if is not sendin, at least $id_user will be sending, in other case, show the error view
+     * @param string|int $id_user is the id of the user to get the resources of the main view (welcome view or UserMain view)
+     * @param array $alert_messsage is the array of the alert messages of the operations by the logged user in the app, it's optional if is not necessary share some message
     */
     public function returnWelcomeView(User $user = null, string | int $id_user = null, array $alert_message = []){
 
@@ -34,7 +37,9 @@ class UserController extends BaseController{
         AppLogger::addClientActionsLog($action);
         static::returnView("UserMain", array_merge(["user" => $user, "csrf_token" => $csrf_token], $alert_message));
     }
-
+    /**
+     *This funciton creates a new user, validate the data of the Register view and create the resource (user) only if all the data has correct format, else, return a error message on the view
+    */
     public function createUser(){
 
         AppLogger::addClientConnectionLog();

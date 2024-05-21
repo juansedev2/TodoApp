@@ -12,7 +12,6 @@ class TokenGenerator{
      * This function return a random crst token
      * @return string return an random string that is the CSRF token
     */
-    // TODO: TERMINAR IMPLEMENTACIÓN DE CSRF
     public static function generateCSRFToken(): string{
         return bin2hex(random_bytes(static::$BYTES));
     }

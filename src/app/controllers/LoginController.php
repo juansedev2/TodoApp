@@ -8,12 +8,18 @@ use Jdev2\TodoApp\core\helpers\SessionValidator;
 use Jdev2\TodoApp\app\controllers\BaseController;
 use Jdev2\TodoApp\app\controllers\UserController;
 
+/**
+ * This class is the controller of the login actions of the user
+*/
 class LoginController extends BaseController{
 
+    /**
+     * This function gets the data when the user try the login action in the app, if it's succsesful, then return the welcome view, else, return the login form with the error message
+    */
     public function tryLogin(){
 
         // First, validate if the user already logged before to skip the query
-        if(SessionValidator::validateSesstionIsActive()){
+        if(SessionValidator::validateSessionIsActive()){
             $csrf_token = SessionValidator::assignCSRFToken();
             return static::redirectTo("welcome");
         }
@@ -54,20 +60,30 @@ class LoginController extends BaseController{
             $this->showLoginError("Error, usuario y/o contraseña incorrecto/s");
         }
     }
-
-    public function showLoginError($error_message){
+    /**
+     * This function returns the form view with the error message
+     * @param string $error_message is the description of the error to show in the login error view
+    */
+    public function showLoginError(string $error_message){
         AppLogger::addClientConnectionLog();
         AppLogger::addClientActionsLog("Client redirect to show login error view");
         return static::returnView("LoginFormError", ["error_message" => $error_message]);
     }
-
-    public function showMainUserView($user_name){
+    /**
+     * This function returns login mode user view
+     * @param string $user_name is the name of the user
+     * !THIS FUNCTION IS NOT OPERATIONAL, discard this function until further notice
+    */
+    public function showMainUserView(string $user_name){
         return static::returnView("LoginMode", ["user_name" => $user_name]);
     }
-
+    /**
+     * This function returns the main view of the user logged in, the main view with an possible alert message about the CRUD operations
+     * @param array $alert_message is the array with the messages to show in the UserMain view (shoul will be an associative array to will be extract it)
+    */
     public function showWelcome(array $alert_message = []){
         AppLogger::addClientConnectionLog();
-        if(!SessionValidator::validateSesstionIsActive()){
+        if(!SessionValidator::validateSessionIsActive()){
             AppLogger::addClientActionsLog("Client redirect to show login error view, but with error because his session is not active - ");
             return $this->showLoginError("Error, sesión no iniciada");
         }
@@ -75,11 +91,15 @@ class LoginController extends BaseController{
         AppLogger::addClientActionsLog("Client redirect to welcome view, his session is still active - ");
         $user_controller->returnWelcomeView(id_user: SessionValidator::returnIdentificator(), alert_message: $alert_message);
     }
-
+    /**
+     * This function returns the validate inputs operations of the email and password data with the InputValidator class, see this class and his validateAllEmptyStrings method
+    */
     private function validateInputs(string $email, string $password){
         return InputValidator::validateAllEmptyStrings([$email, $password]);
     }
-
+    /**
+     * This function CLOSE the currently sesison of the user with the SessionValidator class, see the destroySession method, and redirect the client to the login form view
+    */
     public function closeSession(){
         AppLogger::addClientConnectionLog();
         AppLogger::addClientActionsLog("Client closed session - ");
