@@ -57,4 +57,14 @@ class Task extends Model{
         return $result;
     }
 
+    /**
+     * This function call the store procedure getTaskProperty to get the data about the property of the task, his id and the user id.
+     * It's important to know that this function only returns the first result, because only task resource belongs to one user, then return only one record
+    */
+    public function getTaskProperty(string | int $id_task){
+        $query = "CALL getTaskProperty(?)";
+        $result = Injector::get("querybuilder")->ownQuery($query, [$id_task], true);
+        return $result[0];
+    }
+
 }
