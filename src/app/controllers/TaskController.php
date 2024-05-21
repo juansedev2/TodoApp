@@ -10,6 +10,7 @@ use Jdev2\TodoApp\core\helpers\SessionValidator;
 use Jdev2\TodoApp\app\controllers\BaseController;
 use Jdev2\TodoApp\app\controllers\LoginController;
 use Jdev2\TodoApp\app\controllers\ExceptionController;
+use Jdev2\TodoApp\app\policies\TaskOperationsPolicy;
 
 /**
  * This class is the controller to the task model and his operations about CRUD example and others
@@ -35,6 +36,9 @@ class TaskController extends BaseController{
                 //return throw new Exception("NINGUN DATO FUE ENVIADO, MOSTRAR ERROR", 1);
                 return (new LoginController)->showWelcome(["message" => "Error de solicitud", "color" => "alert-warning"]);
             }else{
+
+                // First, validate the property to show the resorce
+                TaskOperationsPolicy::validateTaskPropertyOfUser($id_task, SessionValidator::returnIdentificator());
                 $task = new Task;
                 $result = $task->getInfoTaskById($id_task);
                 if($result){
@@ -84,6 +88,9 @@ class TaskController extends BaseController{
                 AppLogger::addClientActionsLog("Client doesn't send all necessary data to update the task resource");
                 return (new LoginController)->showWelcome(["message" => "Error, datos incompletos", "color" => "alert-warning"]);
             }else{
+
+                // First, validate the property to show the resorce
+                TaskOperationsPolicy::validateTaskPropertyOfUser($id_task, SessionValidator::returnIdentificator());
                 $result = (new Task)->updateTask($id_task, $title_task, $task_description);
                 if($result){
                     AppLogger::addClientActionsLog("Client update the task resource {$id_task}");
@@ -167,6 +174,8 @@ class TaskController extends BaseController{
                     AppLogger::addClientActionsLog($action);
                 return (new LoginController)->showWelcome(["message" => "Error de solicitud", "color" => "alert-danger"]);
             }else{
+                // First, validate the property to show the resorce
+                TaskOperationsPolicy::validateTaskPropertyOfUser($id_task_input_button, SessionValidator::returnIdentificator());
                 $result = (new Task)->deleteTask($id_task_input_button);
                 if($result){
                     $action = "Client DELETE the id {$id_task_input_button} task resource";
