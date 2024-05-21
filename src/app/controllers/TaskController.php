@@ -2,7 +2,9 @@
 namespace Jdev2\TodoApp\app\controllers;
 
 use Exception;
+use Jdev2\TodoApp\core\Injector;
 use Jdev2\TodoApp\app\models\Task;
+use Jdev2\TodoApp\core\utils\AppLogger;
 use Jdev2\TodoApp\core\helpers\InputValidator;
 use Jdev2\TodoApp\core\helpers\SessionValidator;
 use Jdev2\TodoApp\app\controllers\BaseController;
@@ -16,6 +18,7 @@ class TaskController extends BaseController{
 
         if(static::validateSession()){
 
+            AppLogger::addClientConnectionLog();
             // Always first validate Token
             static::validateCSRFToken();
 
@@ -23,6 +26,7 @@ class TaskController extends BaseController{
             $id_task = InputValidator::escapeCharacters(InputValidator::cleanWhiteSpaces($id_task));
 
             if(empty($id_task)){
+                AppLogger::addClientActionsLog("Client get an empty task id resource");
                 //return throw new Exception("NINGUN DATO FUE ENVIADO, MOSTRAR ERROR", 1);
                 return (new LoginController)->showWelcome(["message" => "Error de solicitud", "color" => "alert-warning"]);
             }else{
@@ -30,8 +34,10 @@ class TaskController extends BaseController{
                 $result = $task->getInfoTaskById($id_task);
                 if($result){
                     $csrf_token = SessionValidator::assignCSRFToken();
+                    AppLogger::addClientActionsLog("Client get the update task view");
                     return static::returnView("UpdateTask", ["task" => $task, "csrf_token" => $csrf_token]);
                 }else{
+                    AppLogger::addClientActionsLog("Client cannot get the taks update view resource because the task resource cannot be getting");
                     //return throw new Exception("404, tarea no encontrada", 1);
                     return ExceptionController::returnNotFoundView();
                 }
@@ -43,6 +49,9 @@ class TaskController extends BaseController{
     }
 
     public function updateTask(){
+
+        AppLogger::addClientConnectionLog();
+
         if(static::validateSession()){
 
             // Always first validate Token
@@ -64,15 +73,18 @@ class TaskController extends BaseController{
             }
             
             if(!InputValidator::validateAllEmptyStrings([$id_task, $title_task, $task_description])){
-                // return throw new Exception("DATOS INCOMPLETOS MOSTRAR ERROR", 1);
+                // return throw new Exception("DATOS INCOMPLETOS MOSTRAR ERROR", 1);}
+                AppLogger::addClientActionsLog("Client doesn't send all necessary data to update the task resource");
                 return (new LoginController)->showWelcome(["message" => "Error, datos incompletos", "color" => "alert-warning"]);
             }else{
                 $result = (new Task)->updateTask($id_task, $title_task, $task_description);
                 if($result){
+                    AppLogger::addClientActionsLog("Client update the task resource {$id_task}");
                     return static::redirectTo("welcome");
                 }else{
                     //return throw new Exception("500, no se pudo actualizar la tarea, error de servidor", 1);
-                    return (new LoginController)->showWelcome(["message" => "Hubo un error al intentar insertar la tarea, por favor intentar después", "color" => "alert-danger"]);
+                    AppLogger::addClientActionsLog("Client cannot update the task resource {$id_task}");
+                    return (new LoginController)->showWelcome(["message" => "Hubo un error al intentar actualizar la tarea, por favor intentar después", "color" => "alert-danger"]);
                 }
             }
         }else{
@@ -81,6 +93,8 @@ class TaskController extends BaseController{
     }
 
     public function createTask(){
+
+        AppLogger::addClientConnectionLog();
 
         if(static::validateSession()){
 
@@ -109,9 +123,13 @@ class TaskController extends BaseController{
                 $result = (new Task)->insertTask($id_user, $title_task, $task_description);
 
                 if($result){
+                    $action = "User create a task resource " . SessionValidator::returnIdentificatorName();
+                    AppLogger::addClientActionsLog($action);
                     return static::redirectTo("welcome");
                 }else{
                     //return throw new Exception("500, no se pudo crear la tarea, error de servidor", 1);
+                    $action = "User CANNOT create a task resource " . SessionValidator::returnIdentificatorName() . " - see the log errors";
+                    AppLogger::addClientActionsLog($action);
                     return (new LoginController)->showWelcome(["message" => "Hubo un error al intentar insertar la tarea, por favor intentar después", "color" => "alert-danger"]);
                 }
             }
@@ -122,6 +140,8 @@ class TaskController extends BaseController{
 
     public function deleteTask(){
 
+        AppLogger::addClientConnectionLog();
+
         if(static::validateSession()){
 
             // Always first validate Token
@@ -131,13 +151,19 @@ class TaskController extends BaseController{
             $id_task_input_button = InputValidator::escapeCharacters(InputValidator::cleanWhiteSpaces($id_task_input_button));
             
             if(empty($id_task_input_button)){
+                    $action = "Client doesn't send the id task resource";
+                    AppLogger::addClientActionsLog($action);
                 return (new LoginController)->showWelcome(["message" => "Error de solicitud", "color" => "alert-danger"]);
             }else{
                 $result = (new Task)->deleteTask($id_task_input_button);
                 if($result){
+                    $action = "Client DELETE the id {$id_task_input_button} task resource";
+                    AppLogger::addClientActionsLog($action);
                     return static::redirectTo("welcome");
                 }else{
                     //return throw new Exception("500, no se pudo eliminar la tarea, error de servidor", 1);
+                    $action = "Client cannot DELETE the id {$id_task_input_button} task resource";
+                    AppLogger::addClientActionsLog($action);
                     return ExceptionController::returnInternalServerErrorView();
                 }
             }

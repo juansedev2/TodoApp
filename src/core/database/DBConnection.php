@@ -3,16 +3,17 @@ namespace Jdev2\TodoApp\core\database;
 
 use PDO;
 use PDOException;
+use Jdev2\TodoApp\core\utils\AppLogger;
+
 class DBConnection{
 
     public static function ConnectDB(Array $config) : PDO | null{
         try {
             $pdo = new PDO("{$config['sgbd']}:host={$config['host']}:{$config['port']};dbname={$config['name']}", "{$config['user']}", "{$config['password']}");
-            //$pdo = new PDO('mysql:host=localhost;dbname=animesappdb', "root", "root");
-            //echo "<b>Conexión exitosa</b><br/>";
             return $pdo;
-        } catch (PDOException $e) {
-            echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+        } catch (PDOException $error) {
+            //echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+            AppLogger::addAppErrorLog($error);
             return null;
         }
     }

@@ -4,6 +4,8 @@ namespace Jdev2\TodoApp\core\database;
 use PDO;
 use Exception;
 use PDOException;
+use Jdev2\TodoApp\core\Injector;
+use Jdev2\TodoApp\core\utils\AppLogger;
 
 // This class is the QueryBuilder of the app that makes the queries with the DB
 class QueryBuilder{
@@ -17,6 +19,11 @@ class QueryBuilder{
     // CRUD OPERATIONS
     // SELECT
     public function selectAll(string $table_name): Array | null{
+
+        if(!$this->validatePDO()){
+            return null;
+        }
+        
         try {
             $query = $this->pdo->prepare("select * from {$table_name}");
             $result = $query->execute();
@@ -25,8 +32,11 @@ class QueryBuilder{
             }
             $query->closeCursor();
             return $result;
-        } catch (PDOException $e) {
-            echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+        } catch (PDOException $error) {
+            //echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+            $logger = Injector::get("logger");
+            $logger->addAppErrorLog($error);
+            Injector::set($logger, "logger");
             return null;
         }
         // https://www.php.net/manual/es/pdo.connections.php
@@ -35,6 +45,10 @@ class QueryBuilder{
 
     // INSERT
     public function create(string $table_name, array $data): bool{
+
+        if(!$this->validatePDO()){
+            return false;
+        }
 
         // Get the fields names and the values of the table
         $fields = implode(", ", array_keys($data));
@@ -46,14 +60,20 @@ class QueryBuilder{
             $result = $query->execute($values);
             $query->closeCursor();
             return $result;
-        } catch (PDOException $e) {
-            echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+        } catch (PDOException $error) {
+            //echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+            AppLogger::addAppErrorLog("Error to create a resource by: {$error}");
             return false;
         }
     }
 
     // SELECT ONE
     public function selectOne(string $table_name, string $id_name, string | int $id): Array | null{
+
+        if(!$this->validatePDO()){
+            return null;
+        }
+        
         try {
             $query = $this->pdo->prepare("select * from {$table_name} where {$id_name} = ? limit 1");
             $result = $query->execute([$id]);
@@ -62,14 +82,20 @@ class QueryBuilder{
                 $query->closeCursor();
             }
             return $result[0]; // ! THIS IS VERY IMPORTANT! RETURN THE ARRAY INSIDE THE ARRAY OF RESULTS!
-        } catch (PDOException $e) {
-            echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+        } catch (PDOException $error) {
+            //echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+            AppLogger::addAppErrorLog("Error to select one resource by: {$error}");
             return null;
         }
     }
 
     // UPDATE
     public function updateOne(string $table_name, string | int $id, string $id_name, Array $data){
+
+        if(!$this->validatePDO()){
+            AppLogger::addAppErrorLog("PDO CONNECTION IS NULL");
+            return false;
+        }
 
         $fields = array_keys($data); // Get the fields name of the table - model
         $values = array_values($data); // Get the values of the query to the model
@@ -82,8 +108,9 @@ class QueryBuilder{
             $result = $query->execute($values);
             $query->closeCursor();
             return $result;
-        } catch (PDOException $e) {
-            echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+        } catch (PDOException $error) {
+            //echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+            AppLogger::addAppErrorLog("Error to update the resource by: {$error}");
             return null;
         }
     }
@@ -91,13 +118,18 @@ class QueryBuilder{
     // DELETE
     public function delete(string $table_name, string | int $id, string $id_name){
 
+        if(!$this->validatePDO()){
+            return false;
+        }
+
         try {
             $query = $this->pdo->prepare("delete from {$table_name} where {$id_name} = ?");
             $result = $query->execute([$id]);
             $query->closeCursor();
             return $result;
-        } catch (PDOException $e) {
-            echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+        } catch (PDOException $error) {
+            //echo "<b> ¡Error!: " . $e->getMessage() . "<b/>";
+            AppLogger::addAppErrorLog("Error to delete the resource by: {$error}");
             return null;
         }
     }
@@ -107,6 +139,10 @@ class QueryBuilder{
      * Each model should can execute his property querys
     */
     public function ownQuery(string $query, Array $values, bool $wait_models = false): Array | bool{
+
+        if(!$this->validatePDO()){
+            return false;
+        }
 
         if(empty($values)){
             return throw new Exception("NO SE ACEPTAN ARREGLOS VACIOS COMO VALORES en la función ownQuery de la clase QueryBuilder", 1);
@@ -142,10 +178,15 @@ class QueryBuilder{
             $query->closeCursor();
 
         } catch (PDOException $error) {
-            echo $error;
+            //echo $error;
+            AppLogger::addAppErrorLog("Error to try call the own query by: {$error}");
             $result = false;
         }
         return $result;
+    }
+
+    private function validatePDO(){
+        return $this->pdo != null;
     }
 
 }

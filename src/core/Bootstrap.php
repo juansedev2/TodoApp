@@ -21,10 +21,8 @@ if(!Injector::get("config")["production"]){
 }
 
 date_default_timezone_set((require __DIR__ ."/config/Config.php")["time-zone"]); // Updathe the timezone to the app of the server
-Injector::set(new QueryBuilder(DBConnection::ConnectDB(Injector::get("config")["database"])), "querybuilder");
-
 // Create the AppLogger and inject to depedences handler, also insert the first necessarylog
-$appLoger = new AppLogger($APP_PATH . "/logs/");
-$appLoger->addClientConnectionLog();
-Injector::set($appLoger, "logger");
+AppLogger::initAppLogger();
+AppLogger::addClientConnectionLog();
+Injector::set(new QueryBuilder(DBConnection::ConnectDB(Injector::get("config")["database"])), "querybuilder");
 
