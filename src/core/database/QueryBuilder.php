@@ -7,17 +7,30 @@ use PDOException;
 use Jdev2\TodoApp\core\Injector;
 use Jdev2\TodoApp\core\utils\AppLogger;
 
-// This class is the QueryBuilder of the app that makes the queries with the DB
+/**
+ * This class is the QueryBuilder of the app that makes the queries with the DB
+*/
 class QueryBuilder{
-
+    /***
+     * The constructor gets a pdo connection
+     * @param $pdo is the pdo connection
+    */
     public function __construct(private $pdo){}
 
+    /**
+     * This function close manually the pdo connection of the currently QueyBuilder instance
+    */
     public function __destruct(){
         $this->pdo = null;
     }
 
     // CRUD OPERATIONS
-    // SELECT
+    
+    /**
+     * This function gets all (SELECT ALL) of the records and all his data according of a table name, if any record exists, then return it in a associate array, else return null
+     * @param string $table_name is the name of the table in the database
+     * @return array|null return an array associative that contain each record, else, return null in case of failed or if any record exists
+    */
     public function selectAll(string $table_name): Array | null{
 
         if(!$this->validatePDO()){
@@ -44,6 +57,12 @@ class QueryBuilder{
     }
 
     // INSERT
+    /**
+     * This function INSERT a new record on a table, returns a bool acording the result of the operation
+     * @param string $table_name is the name of the table in the database
+     * @param array $data is the associative array that must contains the name of the fields and his values to make the insert operation
+     * @return bool true if the operations was succesful, else return false
+    */
     public function create(string $table_name, array $data): bool{
 
         if(!$this->validatePDO()){
@@ -66,8 +85,14 @@ class QueryBuilder{
             return false;
         }
     }
-
     // SELECT ONE
+    /**
+     * This function get an specific record on a table accordin his id (THIS FUNCTION ONLY RETURN ONE RECORD)
+     * @param string $table_name is the name of the table in the database
+     * @param string $id_name is the name of the key to make the filter
+     * @param string|int $id is the id value of the record to do the filter (where) according the $id_name
+     * @return array|null return an array that contain the record if exists, else, return null
+    */
     public function selectOne(string $table_name, string $id_name, string | int $id): Array | null{
 
         if(!$this->validatePDO()){
@@ -88,9 +113,16 @@ class QueryBuilder{
             return null;
         }
     }
-
     // UPDATE
-    public function updateOne(string $table_name, string | int $id, string $id_name, Array $data){
+    /**
+     * This function update an specific record on the database according the data an his id of the record to make the filter (where)
+     * @param string $table_name is the name of the table in the database
+     * @param string|int $id is the id value of the record to do the filter (where) according the $id_name
+     * @param string $id_name is the name of the key to make the filter
+     * @param array $data must be the associative array to update the specific fields of the record
+     * @return bool|null return true if the operations was succesful, else return faklase or null
+    */
+    public function updateOne(string $table_name, string | int $id, string $id_name, Array $data) : bool | null{
 
         if(!$this->validatePDO()){
             AppLogger::addAppErrorLog("PDO CONNECTION IS NULL");
@@ -114,9 +146,15 @@ class QueryBuilder{
             return null;
         }
     }
-
     // DELETE
-    public function delete(string $table_name, string | int $id, string $id_name){
+    /**
+     * This function DELETE an specific record on the database according the data an his id of the record to make the filter (where)
+     * @param string $table_name is the name of the table in the database
+     * @param string|int $id is the id value of the record to do the filter (where) according the $id_name
+     * @param string $id_name is the name of the key to make the filter
+     * @return bool|null return true if the operations was succesful, else return faklase or null
+    */
+    public function delete(string $table_name, string | int $id, string $id_name) : bool | null{
 
         if(!$this->validatePDO()){
             return false;
@@ -135,8 +173,12 @@ class QueryBuilder{
     }
 
     /**
-     * 
-     * Each model should can execute his property querys
+     * This function is that make personalized querys or also named raw query, for example store procedures. This function return the answer according his parameters:
+     * @param string $query is the string SQL query to do in the database (MUST BE CONTAIN WILDCARDS, else returns an exception)
+     * @param array $values is array with the values to do the prepare query and the operation
+     * @param bool $wait_models is the flag to return any model or no, default it's false and only return a bool answer if the query operations was succesful, else return false, but if the parameters will pased with a true value, then
+     * this will do the query operation and if the query was succesful and return any record, the return that answer
+     * @return array|bool true if the query operation was succesful, else return false or return an array that contains the records result of the operations (according the $wait_models parameter)
     */
     public function ownQuery(string $query, Array $values, bool $wait_models = false): Array | bool{
 
@@ -185,6 +227,10 @@ class QueryBuilder{
         return $result;
     }
 
+    /**
+     * This function validte if the pdo proprety is null (to validate the state of the connection)
+     * @return bool true if the connection is active, else return false
+    */
     private function validatePDO(){
         return $this->pdo != null;
     }
